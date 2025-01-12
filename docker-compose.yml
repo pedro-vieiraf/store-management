@@ -14,7 +14,7 @@ services:
       - PORT=3333
       - HOST=0.0.0.0
       - LOG_LEVEL=info
-      - APP_KEY=DGFvXF6d4SmvJHSMIx4WFCPZ6N8asozn
+      - APP_KEY=KjC9aaa8_stTRKLCtNp4IrHa-apQ-15-
       - DB_HOST=db
       - DB_PORT=3306
       - DB_USER=user
