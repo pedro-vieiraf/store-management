@@ -1,17 +1,17 @@
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
-import Hash from '@ioc:Adonis/Core/Hash'
+import User from '#models/user'
+import hash from '@adonisjs/core/services/hash'
+import { HttpContext } from '@adonisjs/core/http'
 
 export default class AuthController {
   // Método para registro
-  public async register({ request }: HttpContextContract) {
+  public async register({ request }: HttpContext) {
     const data = request.only(['email', 'password'])
     const user = await User.create(data)
     return user
   }
 
   // Método para login
-  public async login({ request, auth, response }: HttpContextContract) {
+  public async login({ request, auth, response }: HttpContext) {
     const { email, password } = request.only(['email', 'password'])
 
     // Verifique se o usuário existe
@@ -21,7 +21,7 @@ export default class AuthController {
     }
 
     // Verifique a senha
-    if (!(await Hash.verify(user.password, password))) {
+    if (!(await hash.verify(user.password, password))) {
       return response.unauthorized({ message: 'Invalid credentials' })
     }
 
