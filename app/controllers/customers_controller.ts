@@ -20,7 +20,7 @@ export default class CustomersController {
       const { name, cpf } = request.body()
 
       if (!name || !cpf) {
-        return response.status(400).json({ error: 'All fields are required' })
+        return response.status(400).json({ error: 'Required fields are missing' })
       }
 
       await Customer.create({ name, cpf })
@@ -109,7 +109,7 @@ export default class CustomersController {
       const { name, cpf } = request.body()
 
       if (!name || !cpf) {
-        return response.status(400).json({ error: 'All fields are required' })
+        return response.status(400).json({ error: 'Required fields are missing' })
       }
 
       const customer = await Customer.find(id)
