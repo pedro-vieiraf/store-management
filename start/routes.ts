@@ -1,6 +1,7 @@
 import User from '#models/user'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const SalesController = () => import('#controllers/sales_controller')
 const ProductsController = () => import('#controllers/products_controller')
 const CustomersController = () => import('#controllers/customers_controller')
 
@@ -34,3 +35,6 @@ router.group(() => {
   router.put('products/:id', [ProductsController, 'update'])
   router.delete('products/:id', [ProductsController, 'destroy'])
 })
+
+// Sale Route
+router.post('sales', [SalesController, 'store'])
