@@ -72,9 +72,7 @@ export default class ProductsController {
 
       await product.merge(updatedProduct).save()
 
-      return response
-        .status(200)
-        .json({ message: 'Customer updated successfully!', updatedProduct })
+      return response.status(200).json({ message: 'Product updated successfully!', updatedProduct })
     } catch (err) {
       return response.status(500).json({ error: err.message })
     }
