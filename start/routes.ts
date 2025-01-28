@@ -1,23 +1,15 @@
-import User from '#models/user'
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+const UsersController = () => import('#controllers/users_controller')
 const SalesController = () => import('#controllers/sales_controller')
 const ProductsController = () => import('#controllers/products_controller')
 const CustomersController = () => import('#controllers/customers_controller')
 
-router.post('login', async ({ request, auth }) => {
-  const { email, password } = request.all()
-  const user = await User.verifyCredentials(email, password)
-
-  return await auth.use('jwt').generate(user) // Honestamente, não sei o que está dando errado, pois está funcionando
+// User routes
+router.group(() => {
+  router.post('/', [UsersController, 'login'])
+  router.post('register', [UsersController, 'register'])
 })
-
-router
-  .get('/', async ({ auth }) => {
-    return auth.getUserOrFail()
-  })
-  .use(middleware.auth())
-
 // Customers Routes
 router.group(() => {
   router.get('customers', [CustomersController, 'index']).use(middleware.auth())
