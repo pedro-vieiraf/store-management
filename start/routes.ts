@@ -9,7 +9,7 @@ router.post('login', async ({ request, auth }) => {
   const { email, password } = request.all()
   const user = await User.verifyCredentials(email, password)
 
-  return await auth.use('jwt').generate(user)
+  return await auth.use('jwt').generate(user) // Honestamente, não sei o que está dando errado, pois está funcionando
 })
 
 router
@@ -20,21 +20,21 @@ router
 
 // Customers Routes
 router.group(() => {
-  router.get('customers', [CustomersController, 'index'])
-  router.get('customers/:id', [CustomersController, 'show'])
-  router.post('customers', [CustomersController, 'store'])
-  router.put('customers/:id', [CustomersController, 'update'])
-  router.delete('customers/:id', [CustomersController, 'destroy'])
+  router.get('customers', [CustomersController, 'index']).use(middleware.auth())
+  router.get('customers/:id', [CustomersController, 'show']).use(middleware.auth())
+  router.post('customers', [CustomersController, 'store']).use(middleware.auth())
+  router.put('customers/:id', [CustomersController, 'update']).use(middleware.auth())
+  router.delete('customers/:id', [CustomersController, 'destroy']).use(middleware.auth())
 })
 
 // Products Routes
 router.group(() => {
-  router.get('products', [ProductsController, 'index'])
-  router.get('products/:id', [ProductsController, 'show'])
-  router.post('products', [ProductsController, 'store'])
-  router.put('products/:id', [ProductsController, 'update'])
-  router.delete('products/:id', [ProductsController, 'destroy'])
+  router.get('products', [ProductsController, 'index']).use(middleware.auth())
+  router.get('products/:id', [ProductsController, 'show']).use(middleware.auth())
+  router.post('products', [ProductsController, 'store']).use(middleware.auth())
+  router.put('products/:id', [ProductsController, 'update']).use(middleware.auth())
+  router.delete('products/:id', [ProductsController, 'destroy']).use(middleware.auth())
 })
 
 // Sale Route
-router.post('sales', [SalesController, 'store'])
+router.post('sales', [SalesController, 'store']).use(middleware.auth())
