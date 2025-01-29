@@ -5,7 +5,10 @@ import { DateTime } from 'luxon'
 export default class ProductsController {
   async index({ response }: HttpContext) {
     try {
-      const products = await Product.query().select('name', 'price').orderBy('name', 'asc')
+      const products = await Product.query()
+        .select('name', 'price')
+        .whereNull('deletedAt')
+        .orderBy('name', 'asc')
       if (!products) {
         return response.status(404).json({ error: 'No products found' })
       }
@@ -53,26 +56,24 @@ export default class ProductsController {
   async update({ request, response }: HttpContext) {
     try {
       const { id } = request.params()
-      const { name, description, price, stock } = request.body()
-      if (!name || !description || !price || !stock) {
-        return response.status(400).json({ error: 'Required fields are missing' })
-      }
+      const data = request.only(['name', 'description', 'price', 'stock'])
 
       const product = await Product.find(id)
       if (!product) {
         return response.status(404).json({ error: 'Product not found' })
       }
 
+      product.merge(data)
+      await product.save()
+
       const updatedProduct = {
-        name: name,
-        description: description,
-        price: price,
-        stock: stock,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
       }
 
-      await product.merge(updatedProduct).save()
-
-      return response.status(200).json({ message: 'Product updated successfully!', updatedProduct })
+      return response.status(200).json(updatedProduct)
     } catch (err) {
       return response.status(500).json({ error: err.message })
     }
@@ -93,7 +94,7 @@ export default class ProductsController {
 
       await product.merge(deletedQuery).save()
 
-      return response.status(240)
+      return response.status(204)
     } catch (err) {
       return response.status(500).json({ error: err.message })
     }

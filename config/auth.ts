@@ -4,6 +4,7 @@ import { JwtGuard } from '../app/auth/guards/jwt.js'
 
 const jwtConfig = {
   secret: process.env.JWT_SECRET || 'secretJWT',
+  expiresIn: '1h',
 }
 
 const userProvider = sessionUserProvider({

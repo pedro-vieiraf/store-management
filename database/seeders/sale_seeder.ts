@@ -10,7 +10,7 @@ export default class extends BaseSeeder {
           customerId: 1,
           productId: 3,
           quantity: 2,
-          unitPrice: 1500,
+          unitPrice: 300,
         },
         {
           customerId: 2,
@@ -22,13 +22,13 @@ export default class extends BaseSeeder {
           customerId: 3,
           productId: 2,
           quantity: 3,
-          unitPrice: 550,
+          unitPrice: 145.5,
         },
         {
           customerId: 1,
           productId: 2,
           quantity: 2,
-          unitPrice: 1100,
+          unitPrice: 145.5,
         },
       ]
     )

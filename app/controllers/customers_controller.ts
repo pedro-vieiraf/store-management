@@ -89,27 +89,22 @@ export default class CustomersController {
   async update({ request, response }: HttpContext) {
     try {
       const { id } = request.params()
-      const { name, cpf } = request.body()
-
-      if (!name || !cpf) {
-        return response.status(400).json({ error: 'Required fields are missing' })
-      }
+      const data = request.only(['name', 'cpf'])
 
       const customer = await Customer.find(id)
       if (!customer) {
         return response.status(404).json({ error: 'Customer not found' })
       }
 
+      customer.merge(data)
+      await customer.save()
+
       const updatedCustomer = {
-        name: name,
-        cpf: cpf,
+        name: customer.name,
+        cpf: customer.cpf,
       }
 
-      await customer.merge(updatedCustomer).save()
-
-      return response
-        .status(200)
-        .json({ message: 'Customer updated successfully!', updatedCustomer })
+      return response.status(200).json(updatedCustomer)
     } catch (err) {
       console.error(err)
       return response.status(500).json({ error: err.message })
